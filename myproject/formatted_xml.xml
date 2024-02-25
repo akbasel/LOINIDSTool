@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<ids xmlns="http://standards.buildingsmart.org/IDS">
+    <info>
+        <title>My IDS</title>
+    </info>
+    <specifications>
+        <applicability>
+            <Entity>
+                <simpleValue>IfcBuildingElementProxy</simpleValue>
+            </Entity>
+        </applicability>
+        <requirements>
+            <propertySet>
+                <simpleValue>Dimensions</simpleValue>
+            </propertySet>
+        </requirements>
+        <requirements>
+            <Property datatype="xs:string">
+                <simpleValue>Achse</simpleValue>
+            </Property>
+        </requirements>
+        <applicability>
+            <Entity>
+                <simpleValue>IfcBuildingElementProxy</simpleValue>
+            </Entity>
+        </applicability>
+        <requirements>
+            <propertySet>
+                <simpleValue>Dimensions</simpleValue>
+            </propertySet>
+        </requirements>
+        <requirements>
+            <Property datatype="xs:string">
+                <simpleValue>Bereich</simpleValue>
+            </Property>
+        </requirements>
+        <applicability>
+            <Entity>
+                <simpleValue>IfcBuildingElementProxy</simpleValue>
+            </Entity>
+        </applicability>
+        <requirements>
+            <propertySet>
+                <simpleValue>DBA_Attributes</simpleValue>
+            </propertySet>
+        </requirements>
+        <requirements>
+            <Property datatype="xs:string">
+                <simpleValue>Objektgruppe</simpleValue>
+            </Property>
+        </requirements>
+    </specifications>
+</ids>

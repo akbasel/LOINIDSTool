@@ -1,0 +1,14 @@
+   <SetOfProperties UUID="18f434c3-634d-4fcc-ba62-04106efb8eef" Date="2022-05-02T09:21:20+01:00">
+	 <Name UUID="4ca1cfed-b6f6-46dc-8fbf-50f4d097c981" LanguageCode="en">Pset_WallCommon</Name>
+	 <Definition UUID="99906938-eb25-439a-ae4e-a4869c63f6fb" LanguageCode="en">Definition of the project specific set of properties</Definition> 
+	 <Property TargetName="Reference" TargetUUID="e6adff2a-19cb-4b04-8f07-89f3934bbb6c"></Property>
+   </SetOfProperties>
+
+
+	<Property UUID="e6adff2a-19cb-4b04-8f07-89f3934bbb6c" Date="2022-05-02T09:21:20+01:00">
+		<Name UUID="e8adff2a-19cb-4b04-8f07-89f3934bbb6c" LanguageCode="en">Reference</Name>
+		<Definition UUID="3bc4f4a1-ec3b-46f8-b9f8-5acb4c472486" LanguageCode="en">Reference</Definition>
+		<Datatype>xs:string</Datatype>
+      		<ReferenceDocument TargetName="Pset_WallCommon" TargetUUID="aad6923e-94b9-4626-8dc6-a54d537aab4e"/>	
+	</Property>
+	
