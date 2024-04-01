@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='utf-8'?>
+<qaExport user="EAkbas" date="2024-01-17T12:37:27" version="3.2.5">
+  <elementSection>
+    <container ID="a5a4a370-8d16-4976-8e0e-d01ee3a9de10" name="IDS - New RuleSet">
+      <checkrun ID="fe39d306-091c-4b70-95e2-e7643f500455" name="Rule" active="true" user="" date="" state="0" createFailed="true" createWarnings="true" createIgnored="false" createPassed="true" createUndefined="false" objectsOnly="true" partsOfComposites="true">
+        <rule type="Attributes">
+          <attributeRuleList>
+            <ruleScript ID="24d28c40-15ed-453d-9e7a-815add230cbd" name="neueRegel" active="true" resume="true" cmt="">
+              <code>var id = desiteThis.ID();
+
+var value = desiteAPI.getPropertyValue(id,'PropertySet:Property','xs:Datatype');
+
+if( value ) {
+
+desiteResult.setCheckState('passed');
+
+desiteResult.addMessage('Check passed!');
+
+} else {
+
+desiteResult.setCheckState('failed');
+
+}</code>
+            </ruleScript>
+          </attributeRuleList>
+          <attributeRuleTree />
+        </rule>
+        <rule type="UniquePattern">
+          <patternList />
+        </rule>
+        <code />
+      </checkrun>
+      <checkrun ID="4a51a121-7edc-48a5-b641-509ebd8c1f4a" name="neuerPrüflauf" active="true" user="" date="" state="0" createFailed="true" createWarnings="true" createIgnored="false" createPassed="true" createUndefined="false" objectsOnly="true" partsOfComposites="false">
+        <rule type="Attributes">
+          <attributeRuleList>
+            <ruleScript ID="db6b103d-a885-4d4f-a352-48a99ae3981f" name="neueRegel" active="true" resume="true" cmt="">
+              <code>var id = desiteThis.ID();
+
+var value = desiteAPI.getPropertyValue(id,'PropertySet:Property','xs:Datatype');
+
+if( value ) {
+
+desiteResult.setCheckState('passed');
+
+desiteResult.addMessage('Check passed!');
+
+} else {
+
+desiteResult.setCheckState('failed');
+
+}</code>
+            </ruleScript>
+          </attributeRuleList>
+          <attributeRuleTree />
+        </rule>
+        <rule type="UniquePattern">
+          <patternList />
+        </rule>
+        <code />
+      </checkrun>
+      <checkrun ID="37cb60a8-8891-4835-83f8-486df5071fac" name="neuerPrüflauf" active="true" user="" date="" state="0" createFailed="true" createWarnings="true" createIgnored="false" createPassed="true" createUndefined="false" objectsOnly="true" partsOfComposites="false">
+        <rule type="Attributes">
+          <attributeRuleList>
+            <ruleScript ID="366d32ff-1b27-4d2e-8af2-96d07e8e8ec0" name="neueRegel" active="true" resume="true" cmt="">
+              <code>var id = desiteThis.ID();
+
+var value = desiteAPI.getPropertyValue(id,'PropertySet:Property','xs:Datatype');
+
+if( value ) {
+
+desiteResult.setCheckState('passed');
+
+desiteResult.addMessage('Check passed!');
+
+} else {
+
+desiteResult.setCheckState('failed');
+
+}</code>
+            </ruleScript>
+          </attributeRuleList>
+          <attributeRuleTree />
+        </rule>
+        <rule type="UniquePattern">
+          <patternList />
+        </rule>
+        <code />
+      </checkrun>
+    </container>
+  </elementSection>
+  <dataSection>
+    <checkRunData refID="fe39d306-091c-4b70-95e2-e7643f500455">
+      <checkSet />
+      <filterList>
+        <filter name="ifcType" dt="xs:string" pattern="testettetsss" />
+      </filterList>
+    </checkRunData>
+    <checkRunData refID="4a51a121-7edc-48a5-b641-509ebd8c1f4a">
+      <checkSet />
+      <filterList>
+        <filter name="ifcType" dt="xs:string" pattern="testettetsss" />
+      </filterList>
+    </checkRunData>
+    <checkRunData refID="37cb60a8-8891-4835-83f8-486df5071fac">
+      <checkSet />
+      <filterList>
+        <filter name="ifcType" dt="xs:string" pattern="testettetsss" />
+      </filterList>
+    </checkRunData>
+  </dataSection>
+</qaExport>
