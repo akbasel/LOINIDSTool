@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOINTools
+Created for Demostration - LOIN - IDS Converter</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+	        h3 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="file"],
+        textarea {
+            width: calc(100% - 22px); /* Adjusted width */
+            padding: 10px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            display: inline-block;
+        }
+
+        textarea {
+            resize: vertical; /* Allow vertical resizing */
+            height: 150px; /* Initial height */
+        }
+
+        .convert-button,
+        input[type="file"] {
+            width: 48%; /* Adjusted width for both buttons with a small gap in between */
+            margin-right: 4%; /* Adjusted margin with calc() to avoid layout issues */
+        }
+
+        .convert-button {
+            background-color: black;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: inline-block;
+            transition: background-color 0.3s ease; /* Added transition effect */
+        }
+
+        .convert-button:hover {
+            background-color: #2980b9;
+            padding: 8px 16px; /* Adjusted padding for smaller size on hover */
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-block;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .selection-box {
+            margin-bottom: 10px; /* You can adjust the margin as needed */
+        }
+    </style>
+    </style>
+</head>
+
+
+<script>
+	
+    function updateSelectionBoxes(constructionObjects, propertySets, properties, dataTypes) {
+    // Update the construction objects dropdown
+    const constructionObjectDropdown = document.getElementById('selectionfilter');
+    constructionObjectDropdown.innerHTML = '<option value="None">None</option>';
+
+
+    
+    constructionObjects.forEach(function (constructionObject) {
+        let option = document.createElement('option');
+        option.value = constructionObject;
+        option.textContent = "Construction Object: " + constructionObject;
+        constructionObjectDropdown.appendChild(option);
+    });
+
+
+
+
+    // Update the property sets and properties dropdown
+const propertyDropdown = document.getElementById('property');
+    propertyDropdown.innerHTML = '<option value="None">None</option>';
+    propertySets.forEach((propertySet) => {
+        properties.forEach((property) => {
+            dataTypes.forEach((dataType) => {
+                let option = document.createElement('option');
+                option.value = propertySet; // Main identifier
+                option.textContent = `Property Set: ${propertySet}, Property: ${property}, Datatype: ${dataType}`;
+                // Use data attributes for additional details
+                option.setAttribute('data-property', property);
+                option.setAttribute('data-datatype', dataType);
+                propertyDropdown.appendChild(option);
+            });
+        });
+    });
+
+
+
+    // Update the property sets and properties dropdown
+    var propertySetsObjectDropdown = document.getElementById('requirement');
+    propertySetsObjectDropdown.innerHTML = '<option value="None">None</option>';
+    propertySets.forEach(function (propertySet) {
+    properties.forEach(function (property) {
+        dataTypes.forEach((dataType) => {
+            let option = document.createElement('option');
+            option.value = propertySet;
+            option.textContent = `Property Set: ${propertySet}, Property: ${property}, Datatype: ${dataType}`;
+            option.setAttribute('data-property', property);
+            option.setAttribute('data-datatype', dataType);
+	    propertySetsObjectDropdown.appendChild(option);
+        });
+    });
+});
+}
+
+
+
+function uploadFile() {
+    var fileInput = document.getElementById('fileInput');
+    // Ensure formData is defined in the same scope where it's being used.
+    var formData = new FormData();
+    formData.append('XMLInput', fileInput.files[0]);
+
+    fetch('/uploadinfo', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok.');
+        }
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new TypeError("Oops, we haven't got JSON!");
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Assuming the server responds with the necessary data for selection boxes
+        updateSelectionBoxes(data.constructionObjects, data.propertySets, data.properties, data.dataTypes);
+    })
+    .catch(error => {
+        console.error('Error during upload:', error);
+    });
+}
+
+
+
+   function processXML() {
+    var fileInput = document.getElementById('fileInput');
+    var formData = new FormData();
+    formData.append('XMLInput', fileInput.files[0]);
+
+    fetch('/processxml', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Assuming the server responds with a JSON containing constructionObjects, propertySets, and properties
+        updateSelectionBoxes(data.constructionObjects, data.propertySets, data.properties, data.dataTypes);
+    })
+    .catch(error => {
+        console.error('Error during upload:', error);
+    });
+}
+
+
+    
+    // New function to trigger the download of Desite XML
+    function downloadDesite() {
+        // Get the generated Desite XML from the server
+        fetch('/generate_desite', {
+            method: 'GET'
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            // Create a blob URL for the response and set it as the href of the download link
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'output_desite.qa.xml';
+            a.click();
+        })
+        .catch(error => {
+            console.error('Error during Desite XML generation:', error);
+        });
+    }
+
+
+
+
+function convertText() {
+    // Collect all selections
+    var selectedFilter = document.getElementById('selectionfilter').value;
+
+const selectedPropertySetAll = document.getElementById('property');
+const selectedPropertySet = selectedPropertySetAll.value;
+const selectedProperty = selectedPropertySetAll.options[selectedPropertySetAll.selectedIndex]?.getAttribute('data-property') || '';
+const selectedOption = selectedPropertySetAll.options[selectedPropertySetAll.selectedIndex];
+//const selectedProperty = selectedOption.getAttribute('data-property');
+const selectedDataType = selectedOption.getAttribute('data-datatype');
+
+const selectedReqPropertySetAll = document.getElementById('requirement');
+const selectedReqPropertySet = selectedReqPropertySetAll.value;
+const selectedOptionReq = selectedReqPropertySetAll.options[selectedReqPropertySetAll.selectedIndex];
+const selectedReqProperty = selectedOptionReq.getAttribute('data-property');
+const selectedReqDataType = selectedOptionReq.getAttribute('data-datatype');
+
+
+console.log("selectedPropertySet:", selectedPropertySet);
+console.log("selectedProperty:", selectedProperty);
+console.log("selectedDataType:", selectedDataType);
+console.log("selectedReqPropertySet:", selectedReqPropertySet);
+console.log("selectedReqProperty:", selectedReqProperty);
+console.log("selectedReqDataType:", selectedReqDataType);
+
+
+    var fileInput = document.getElementById('fileInput');
+    var file = fileInput.files.length > 0 ? fileInput.files[0] : null;
+
+    const formData = new FormData();
+    if (file) {
+        formData.append('XMLInput', file);
+    }
+    // Append additional data to formData for both Filter and Requirement selections
+    formData.append('selectedFilter', selectedFilter);
+    formData.append('Filter - selectedPropertySet', selectedPropertySet);
+    if (selectedProperty) {
+    formData.append('selectedProperty', selectedProperty);
+}
+//    formData.append('Filter - selectedProperty', selectedProperty);
+    formData.append('Filter - selectedDatatype', selectedDataType);
+    formData.append('Requirement - selectedPropertySet', selectedReqPropertySet);
+    formData.append('Requirement - selectedProperty', selectedReqProperty);
+    formData.append('Requirement - selectedDatatype', selectedReqDataType);
+
+    // First, submit selections to process_xml_endpoint
+    fetch('/processxml', {
+    method: 'POST', // Change this to POST if submitting data
+    body: formData, // Assuming you're submitting formData including the XML file etc.
+    headers: {
+        // Include any headers required; for FormData, Content-Type is usually set automatically
+    },
+})
+.then(response => {
+    if (response.ok) {
+        return response.text(); // or response.json() if the server responds with JSON
+    } else {
+        throw new Error('Network response was not ok.');
+    }
+})
+.then(idsXml => {
+    document.getElementById('textBox').value = idsXml; // Displaying the response in a textarea
+})
+.catch(error => {
+    console.error('Error during conversion:', error);
+});
+}
+
+
+
+
+</script>
+
+<body>
+
+    <h2>LOIN - IDS Converter</h2>	
+    <h3>Demostration</h3>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <!-- File Upload Input -->
+        <label for="fileInput">Select your LOIN (XML file):</label>
+        <input type="file" id="fileInput" name="XMLInput" accept=".xml">
+	<button class="upload-button" type="button" onclick="uploadFile()">
+        Upload XML
+    </button>
+</form>
+<form>
+
+	<!-- Filter -->
+	<label>Filter:</label>
+	<select id="selectionfilter">...
+	    <option value="None">None</option>
+    {% for construction_object in construction_objects %}
+        <option value="Construction Object: {{ construction_object }}">Construction Object: {{ construction_object }}</option>
+    {% endfor %}
+</select>
+	<select id="property">...
+    <option value="None">None</option>
+    {% for property_set in property_sets %}
+        {% for property in properties %}
+	<option value="{{ property_set }}" data-property="{{ property }}" data-datatype="{{ datatype }}">Property Set: {{ property_set }}, Property: {{ property }}, Datatype: {{ datatype }}</option>
+        {% endfor %}
+    {% endfor %}
+</select>
+	<!-- Requirement -->
+	<label>Requirement:</label>
+	<select id="requirement">...
+<option value="None">None</option>
+    {% for property_set in property_sets %}
+        {% for property in properties %}
+            <option value="{{ requirement_set }}" data-property="{{ requirement }}" data-datatype="{{ datatype }}">Requirement Set: {{ requirement_set }}, Requirement: {{ requirement }}, Datatype: {{ datatype }}</option>
+        {% endfor %}
+    {% endfor %}
+</select>
+</form>
+
+<form>
+
+        <!-- Convert Button with Different Recycle Symbol -->
+        <button class="convert-button" type="button" onclick="convertText()">
+            Convert it
+        </button>
+
+        <!-- Text Box -->
+        <label for="textBox">IDS:</label>
+        <!-- Larger Text Box -->
+        <textarea id="textBox" name="textBox" rows="4">{{ ids_xml }}</textarea>
+
+        <!-- Submit Button -->
+	<button class="convert-button" type="button" onclick="downloadDesite()">
+            Download Desite MD Ruleset
+        </button>
+    </form>
+
+
+
+
+
+<h2 style="font-size: 8pt;">For question: elif.akbash@rwth-aachen.de</h2>
+</body>
+</html>
