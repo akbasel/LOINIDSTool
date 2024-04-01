@@ -1,0 +1,4 @@
+"LOIN","IDS","DESITE"
+"BOOLEAN","IfcBoolean","xs:string"
+"INTEGER","IfcInteger","xs:boolean"
+"STRING","IfcString","xs:string"
