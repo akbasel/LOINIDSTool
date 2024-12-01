@@ -120,8 +120,6 @@ def convert_loin_to_ids(loin_xml, desite_content):
     
                     
     # Create Requirement element
-#     my_property = ET.SubElement(my_property_set, "propertySet")
-#                     my_property_name = ET.SubElement(my_property, "Property")
     my_property_name = ET.SubElement(my_property_set, "Property", datatype=selected_reqDatatype_ids)
     simple_value_my_property = ET.SubElement(my_property_name, "name")
     simple_value_my_property.text = selected_reqproperty
@@ -134,7 +132,6 @@ def convert_loin_to_ids(loin_xml, desite_content):
                     
     for script_code_element in desite_root.findall(".//ruleScript/code"):
         script_code = script_code_element.text
-#                         print(script_code, "script_code")
         my_param = f"desiteAPI.getPropertyValue(id,'PropertySet:Property','xs:Datatype')"
         if my_param in script_code:
                             # Modify the script code
@@ -142,21 +139,15 @@ def convert_loin_to_ids(loin_xml, desite_content):
                 my_param,
                 f"desiteAPI.getPropertyValue(id,'{desite_property_name}','{desite_datatype}')"
             )
-#                 print("Original script code:", script_code)
-#                 print("Modified script code:", new_script_code)
 
             script_code_element.text = new_script_code
             break  
-    
-#                     print("new_script_code", new_script_code)
 
 
 
 
     # Convert the IDS XML structure to a string
     formatted_xml = xml.dom.minidom.parseString(ET.tostring(ids_root)).toprettyxml(indent="    ")
-#     print(ET.tostring(desite_root, encoding="utf-8").decode("utf-8"), "desite_root")
-#     print(formatted_xml, 'formatted_xml')
     return formatted_xml, new_script_code, desite_root
 
 
@@ -165,10 +156,8 @@ def process_xml_endpoint():
     file = request.files['XMLInput']
     
     loin_xml = file.read().decode('utf-8')  # Assuming the file is LOIN XML.
-#     print("loin_xml", loin_xml)
-
+    
     loin_root = ET.fromstring(loin_xml)
-#     desite_root = ET.fromstring(desite_content)
 
     desite_content = get_desite_content()
     
@@ -299,26 +288,15 @@ def uploadinfo():
             
             # The XML content for desite can be read from the existing desite file or any other source
             desite_xml = get_desite_content()
-#             desite_file_path = "C:/Users/MSI-NB/Desktop/LOIN/desiterule.qa.xml"
-#             with open(desite_file_path, "r", encoding="utf-8") as desite_file:
-#                 desite_xml = desite_file.read()
 
-            # Convert LOIN to IDS and modify Desite
-#             HERE IS COMMENT OUT
-#             formatted_xml, new_script_code, desite_root = convert_loin_to_ids(loin_xml, desite_xml)
 
-            # Return the IDS XML as plain text
-#             return formatted_xml
-                        # Get distinct construction objects, property sets, and properties from LOIN XML
             construction_objects = get_construction_objects(loin_xml)
-#             property_sets, properties = get_property_sets_and_properties(loin_xml)
+
             
             property_sets, properties, property_datatypes = get_property_sets_and_properties(loin_xml)
-#             print("property_datatypes", property_datatypes)
 
-            # Return the HTML template with options for dynamic dropdowns
-#             return formatted_xml
-# # 
+
+
             return jsonify({
                             'message': 'File received',
                             'filename': file.filename,
@@ -349,23 +327,14 @@ def process_xml():
             loin_xml = file.read().decode('utf-8')
             
             # The XML content for desite can be read from the existing desite file or any other source
-#             desite_file_path = "C:/Users/MSI-NB/Desktop/LOIN/desiterule.qa.xml"
-#             with open(desite_file_path, "r", encoding="utf-8") as desite_file:
-#                 desite_xml = desite_file.read()
             desite_xml = get_desite_content()
 
             # Convert LOIN to IDS and modify Desite
             formatted_xml, new_script_code, desite_root = convert_loin_to_ids(loin_xml, desite_xml)
-#             print("formatted_xml", formatted_xml)
-#             print("new_script_code", new_script_code)
-#             print("desite_root", desite_root)
 
-            # Return the IDS XML as plain text
-#             return formatted_xml
-                        # Get distinct construction objects, property sets, and properties from LOIN XML
+
             construction_objects = get_construction_objects(loin_xml)
-#             property_sets, properties = get_property_sets_and_properties(loin_xml)
-            
+
             property_sets, properties, property_datatypes = get_property_sets_and_properties(loin_xml)
 
 
